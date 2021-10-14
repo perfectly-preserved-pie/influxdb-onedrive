@@ -9,7 +9,7 @@ rclone copy "/home/weewx/influxdb_backup/$today" remote:influxdb
 # First get the size of the directory
 size=`du -sb "/home/weewx/influxdb_backup/"`
 # then decide what to do
-if [[ "$size" -gt 1073741824 ]]; then
+if [[ "$size" -gt '1073741824' ]]; then
 	rm -rf "/home/weewx/influxdb_backup/*"
 fi
 

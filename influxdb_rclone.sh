@@ -5,11 +5,5 @@ today=`date +%m-%d-%Y`
 influxd backup -portable "/home/weewx/influxdb_backup/$today"
 # Copy this new directory to OneDrive
 rclone copy "/home/weewx/influxdb_backup/$today" remote:influxdb/$today
-# If the local directory becomes more than 1GB in size, delete the contents of the local directory
-# First get the size of the directory
-size=`du -sb "/home/weewx/influxdb_backup/" | awk '{print $1}'`
-# then decide what to do
-if [[ "$size" -gt '1073741824' ]]; then
-	rm -rf "/home/weewx/influxdb_backup/*"
-fi
-
+# To prevent the disk from filling, delete all backups except the latest 3
+cd /home/weewx/influxdb_backup && ls -tp | grep -v '/$' | tail -n +6 | xargs -d '\n' -r rm --
